@@ -3,10 +3,10 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { DatabaseModule } from '@database/database.module'
 import { ConfigModule } from '@nestjs/config'
-import { RequestModule } from './request/request.module';
+import { LeechModule } from '@shared/leech/leech.module'
 
 @Module({
-  imports: [ConfigModule.forRoot(), DatabaseModule, RequestModule],
+  imports: [ConfigModule.forRoot(), DatabaseModule, LeechModule],
   controllers: [AppController],
   providers: [AppService]
 })
