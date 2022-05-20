@@ -1,18 +1,25 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CloudService } from '../cloud.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { CloudService } from '../cloud.service'
+import { HttpModule } from '@nestjs/axios'
 
 describe('CloudService', () => {
-  let service: CloudService;
+  let service: CloudService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CloudService],
-    }).compile();
+      imports: [HttpModule],
+      providers: [CloudService]
+    }).compile()
 
-    service = module.get<CloudService>(CloudService);
-  });
+    service = module.get<CloudService>(CloudService)
+  })
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+  it('should be ArrayBuffer', async () => {
+    const data = await service.downloadImage(
+      'http://st.nettruyenco.com/data/comics/168/chung-cu-yeu-quai.jpg',
+      {}
+    )
+
+    expect(data).toBeInstanceOf(Buffer)
+  })
+})

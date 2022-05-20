@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCloudDto } from './dto/create-cloud.dto';
-import { UpdateCloudDto } from './dto/update-cloud.dto';
+import { Injectable, Logger } from '@nestjs/common'
+import { ICloudService } from '@shared/cloud/types/cloud'
+import { AxiosRequestHeaders } from 'axios'
+import { HttpService } from '@nestjs/axios'
+import { catchError, firstValueFrom, map } from 'rxjs'
+import * as https from 'https'
 
 @Injectable()
-export class CloudService {
-  create(createCloudDto: CreateCloudDto) {
-    return 'This action adds a new cloud';
-  }
+export class CloudService implements ICloudService {
+  private readonly logger = new Logger(CloudService.name)
 
-  findAll() {
-    return `This action returns all cloud`;
-  }
+  constructor(private httpService: HttpService) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} cloud`;
-  }
+  async downloadImage(
+    url: string,
+    headers: AxiosRequestHeaders = {}
+  ): Promise<Error | Buffer> {
+    const res = this.httpService
+      .get(url, {
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false
+        }),
+        headers,
+        responseType: 'arraybuffer'
+      })
+      .pipe(
+        map((data) => data.data),
+        catchError((err) => {
+          this.logger.error(err)
+          throw 'Error: ' + err
+        })
+      )
 
-  update(id: number, updateCloudDto: UpdateCloudDto) {
-    return `This action updates a #${id} cloud`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} cloud`;
+    return firstValueFrom<Buffer>(res)
   }
 }

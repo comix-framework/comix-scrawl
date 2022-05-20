@@ -6,6 +6,7 @@ import { HttpModule } from '@nestjs/axios'
 @Module({
   imports: [HttpModule],
   controllers: [LeechController],
-  providers: [LeechService]
+  providers: [LeechService],
+  exports: [LeechService]
 })
 export class LeechModule {}

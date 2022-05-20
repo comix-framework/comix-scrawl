@@ -26,6 +26,15 @@
       ],
       "@shared/*": [
         "src/shared/*"
+      ],
+      "@schema/*": [
+        "src/schema/*"
+      ],
+      "@site/*": [
+        "src/site/*"
+      ],
+      "@app/*": [
+        "src/app/*"
       ]
     }
   }
