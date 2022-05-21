@@ -1,4 +1,4 @@
-import { InjectQueue, OnQueueActive, Process, Processor } from '@nestjs/bull'
+import { InjectQueue, OnQueueActive, Processor } from '@nestjs/bull'
 import { Job, Queue } from 'bull'
 import { Logger } from '@nestjs/common'
 
@@ -29,28 +29,31 @@ export class NettruyenConsumers {
     // this.logger.debug(`Prossing with ${job.id} with data ${job.data}...`)
   }
 
-  @Cron('45 * * * * *')
+  @Cron('30 * * * * *')
   async getStories() {
-    await this.queue.empty()
     this.logger.debug('Get stories...')
     try {
-      const target = await this.targetsService.findOne({ name: 'nettruyen' })
-      // request tới lấy danh sách truyện
-
+      // Kiểm xem trang mục tiêu. Target chính có tồn tại hoặc active hay không
+      const target = await this.targetsService.findOne({
+        name: 'nettruyen',
+        active: true
+      })
       if (!target) {
         return
       }
+
+      // request lấy data
       await this.nettruyenService.load(target.source)
 
       // lấy sach sách truyện
       const stories = this.nettruyenService.getStories()
 
       for (const source of stories) {
+        // chỉ crawl các truyện có trong database cho phép cào
         if (await this.verifyPost(source, target)) {
-          continue
+          // phát sinh sự kiệm cào
+          this.eventEmitter.emit(NettruyenEvents.STORY, source)
         }
-        // phát sinh sự kiện cào truyện
-        this.eventEmitter.emit(NettruyenEvents.STORY, source)
       }
     } catch (e) {
       this.logger.error('Error when crawl stories', e.message)

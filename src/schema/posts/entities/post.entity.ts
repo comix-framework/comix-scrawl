@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
-import { PostsStatus } from '@schema/posts/enums/posts.status'
+import { PostStatus } from '@schema/posts/enums/post-status'
 import { TargetDocument } from '@schema/targets/entities/target.entity'
 
 export type PostDocument = Post & Document
@@ -23,8 +23,8 @@ export class Post {
   @Prop({ type: Types.ObjectId, required: true, index: true })
   target: TargetDocument
 
-  @Prop({ index: true, default: PostsStatus.WAILTING })
-  postStatus: PostsStatus
+  @Prop({ index: true, default: PostStatus.WAILTING })
+  postStatus: PostStatus
 
   @Prop({ required: true, index: true })
   source: string

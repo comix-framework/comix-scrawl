@@ -18,7 +18,8 @@ import { ScheduleModule } from '@nestjs/schedule'
         port: 6379
       }
     }),
-    EventEmitterModule.forRoot(),
+    // tránh bị block
+    EventEmitterModule.forRoot({ maxListeners: 5 }),
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     DatabaseModule,

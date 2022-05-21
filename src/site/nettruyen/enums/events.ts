@@ -1,3 +1,3 @@
 export enum NettruyenEvents {
-  STORY = 'event.nettruyen.story'
+  STORY = 'nettruyen.crawl.story'
 }

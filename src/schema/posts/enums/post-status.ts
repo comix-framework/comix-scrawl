@@ -1,4 +1,4 @@
-export enum PostsStatus {
+export enum PostStatus {
   WAILTING,
   TRY,
   DONE

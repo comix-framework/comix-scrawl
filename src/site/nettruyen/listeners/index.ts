@@ -31,7 +31,9 @@ export class NettruyenListeners {
    */
   @OnEvent(NettruyenEvents.STORY)
   async crawlStory(payload: string) {
+    // load truyện
     await this.nettruyenService.load(payload)
+    // tổng hợp data tryện
     const storyData = this.nettruyenService.getStoryData()
     // B1: Cập nhật truyện vào database Todo: update story data
 
@@ -39,6 +41,7 @@ export class NettruyenListeners {
     const chapters = storyData.chapters
 
     // danh sách chương đã tồn tại trong database
+    // lấy các chương đã tồn tại trong database
     const posts = await this.postsService.find({ source: { $in: chapters } })
 
     // dánh sách source chưa cào
@@ -46,6 +49,6 @@ export class NettruyenListeners {
       (chapter) => !posts.some((post) => post.source === chapter)
     )
 
-    // this.logger.log('sources', sources)
+    this.logger.log('sources', sources)
   }
 }

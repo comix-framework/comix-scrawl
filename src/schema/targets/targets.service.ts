@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { CreateTargetDto } from './dto/create-target.dto'
-import { UpdateTargetDto } from './dto/update-target.dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Target, TargetDocument } from '@schema/targets/entities/target.entity'
