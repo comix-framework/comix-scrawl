@@ -8,6 +8,7 @@ import { NettruyenListeners } from '@site/nettruyen/listeners'
 import { TargetsModule } from '@schema/targets/targets.module'
 import { PostsModule } from '@schema/posts/posts.module'
 import { NettruyenQueue } from '@site/nettruyen/enums/queue'
+import { NettruyenJobs } from '@site/nettruyen/jobs'
 
 @Module({
   imports: [
@@ -19,6 +20,11 @@ import { NettruyenQueue } from '@site/nettruyen/enums/queue'
     PostsModule
   ],
   controllers: [NettruyenController],
-  providers: [NettruyenService, NettruyenConsumers, NettruyenListeners]
+  providers: [
+    NettruyenService,
+    NettruyenConsumers,
+    NettruyenListeners,
+    NettruyenJobs
+  ]
 })
 export class NettruyenModule {}

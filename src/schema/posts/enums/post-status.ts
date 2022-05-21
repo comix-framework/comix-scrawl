@@ -1,5 +1,6 @@
 export enum PostStatus {
   WAILTING,
-  TRY,
-  DONE
+  DOING,
+  DONE,
+  TRY
 }

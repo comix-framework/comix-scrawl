@@ -7,12 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
     Mongo.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get('MONGODB_URI'),
-        connectionFactory: (connection) => {
-          connection.plugin(require('mongoose-autopopulate'))
-          connection.plugin(require('mongoose-slug-generator'))
-          return connection
-        }
+        uri: configService.get('MONGODB_URI')
       }),
       inject: [ConfigService]
     })

@@ -17,7 +17,7 @@ export class LeechService implements ILeechService {
   constructor(private httpService: HttpService) {}
 
   init(url: string, headers: AxiosRequestHeaders = {}) {
-    this.logger.debug('Crawl target: ' + url)
+    this.logger.debug('Request to: ' + url)
     this.obs = this.httpService.get(url, {
       headers
     })
@@ -25,12 +25,14 @@ export class LeechService implements ILeechService {
   }
 
   async get() {
+    const time = Date.now()
     this.html = await lastValueFrom<string>(
       this.obs.pipe(
         first(),
         map((data) => data.data)
       )
     )
+    this.logger.debug('Response during: ' + (Date.now() - time) + 'ms')
     return this.html
   }
 

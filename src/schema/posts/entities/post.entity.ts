@@ -15,15 +15,18 @@ export type PostDocument = Post & Document
 })
 export class Post {
   @Prop({ required: true, index: true })
-  title: string
-
-  @Prop({ required: true, index: true })
   postType: string
 
   @Prop({ type: Types.ObjectId, required: true, index: true })
   target: TargetDocument
 
-  @Prop({ index: true, default: PostStatus.WAILTING })
+  /**
+   * Post parent
+   */
+  @Prop({ type: Types.ObjectId, index: true })
+  parent: Types.ObjectId
+
+  @Prop({ index: true, default: PostStatus.WAILTING, enum: PostStatus })
   postStatus: PostStatus
 
   @Prop({ required: true, index: true })
@@ -32,7 +35,7 @@ export class Post {
   @Prop({ type: Number, required: true, index: true })
   createdAt: number
 
-  @Prop({ type: Number, required: true, index: true })
+  @Prop({ type: Number, index: true })
   doneAt: number
 }
 

@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { Model } from 'mongoose'
+import { Model, Types } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Post, PostDocument } from '@schema/posts/entities/post.entity'
 import { TargetDocument } from '@schema/targets/entities/target.entity'
+
+interface ICreatePost {
+  target: TargetDocument
+  postType: string
+  source: string
+  parent?: Types.ObjectId
+}
 
 @Injectable()
 export class PostsService {
@@ -16,13 +23,18 @@ export class PostsService {
     return this.model.find(filter)
   }
 
-  async create(target: TargetDocument, postType: string, source: string) {
+  async create({ target, postType, source, parent }: ICreatePost) {
     return this.model.create({
       target: target._id,
       postType,
       source,
+      parent,
       createdAt: Date.now(),
       updatedAt: Date.now()
     })
+  }
+
+  async update(post: PostDocument, update: object) {
+    return this.model.findByIdAndUpdate(post._id, update, { new: true })
   }
 }
