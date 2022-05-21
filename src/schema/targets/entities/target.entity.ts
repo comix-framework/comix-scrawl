@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document } from 'mongoose'
-import { PostsStatus } from '@schema/posts/enums/posts.status'
 
 export type TargetDocument = Target & Document
 

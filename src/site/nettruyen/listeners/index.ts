@@ -5,17 +5,19 @@ import { TargetsService } from '@schema/targets/targets.service'
 import { PostsService } from '@schema/posts/posts.service'
 import { InjectQueue } from '@nestjs/bull'
 import { Queue } from 'bull'
+import { NettruyenEvents } from '@site/nettruyen/enums/events'
+import { NettruyenQueue } from '@site/nettruyen/enums/queue'
 
 @Injectable()
-export class NettruyenEvents {
-  private readonly logger = new Logger(NettruyenEvents.name)
+export class NettruyenListeners {
+  private readonly logger = new Logger(NettruyenListeners.name)
 
   constructor(
     private readonly nettruyenService: NettruyenService,
     private readonly targetsService: TargetsService,
     private readonly postsService: PostsService,
     private eventEmitter: EventEmitter2,
-    @InjectQueue('nettruyen') private queue: Queue
+    @InjectQueue(NettruyenQueue.NAME) private queue: Queue
   ) {}
 
   /**
@@ -27,7 +29,7 @@ export class NettruyenEvents {
    * 4. Đẩy các chương vào queue để crawl
    * @param payload
    */
-  @OnEvent('nettruyen.story')
+  @OnEvent(NettruyenEvents.STORY)
   async crawlStory(payload: string) {
     await this.nettruyenService.load(payload)
     const storyData = this.nettruyenService.getStoryData()

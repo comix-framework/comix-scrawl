@@ -1,3 +1,3 @@
-export enum NettruyenEventsEnum {
-  STORY = 'nettruyen.story'
+export enum NettruyenEvents {
+  STORY = 'event.nettruyen.story'
 }

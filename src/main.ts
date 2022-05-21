@@ -22,5 +22,6 @@ async function bootstrap() {
   )
 
   await app.listen()
+  await appContext.close()
 }
 bootstrap()
