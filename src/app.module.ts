@@ -4,7 +4,6 @@ import { AppService } from './app.service'
 import { DatabaseModule } from '@database/database.module'
 import { ConfigModule } from '@nestjs/config'
 import { BullModule } from '@nestjs/bull'
-import { ScheduleModule } from '@nestjs/schedule'
 import { NettruyenModule } from '@site/nettruyen/nettruyen.module'
 import { PostsModule } from '@schema/posts/posts.module'
 import { TargetsModule } from '@schema/targets/targets.module'
@@ -20,7 +19,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter'
     }),
     EventEmitterModule.forRoot(),
     ConfigModule.forRoot(),
-    ScheduleModule.forRoot(),
     DatabaseModule,
     NettruyenModule,
     PostsModule,

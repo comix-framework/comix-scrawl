@@ -20,6 +20,7 @@ async function bootstrap() {
       logger: new Logger()
     }
   )
+
   await app.listen()
 }
 bootstrap()

@@ -1,7 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { InjectQueue } from '@nestjs/bull'
-import { Queue } from 'bull'
-import { Cron, CronExpression } from '@nestjs/schedule'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 
 import { TargetsService } from '@schema/targets/targets.service'
@@ -17,16 +14,13 @@ export class NettruyenJobs {
     private readonly nettruyenService: NettruyenService,
     private readonly targetsService: TargetsService,
     private readonly postsService: PostsService,
-    private eventEmitter: EventEmitter2,
-    @InjectQueue('nettruyen') private queue: Queue
+    private eventEmitter: EventEmitter2
   ) {}
 
   /**
    * Kiểm tra có nằm trong target hay không => clear off. Loop sau đó kiểm tra trong colection post có hay chưa. Chạy 15 phút 1 lần
    */
-  @Cron(CronExpression.EVERY_30_SECONDS)
   async getStories() {
-    this.logger.debug(NettruyenModule.name)
     try {
       const target = await this.targetsService.findOne({ name: 'nettruyen' })
       // request tới lấy danh sách truyện

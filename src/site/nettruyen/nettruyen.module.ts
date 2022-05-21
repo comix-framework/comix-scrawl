@@ -8,11 +8,12 @@ import { LeechModule } from '@shared/leech/leech.module'
 import { NettruyenEvents } from '@site/nettruyen/events'
 import { TargetsModule } from '@schema/targets/targets.module'
 import { PostsModule } from '@schema/posts/posts.module'
+import { NettruyenQueue } from '@site/nettruyen/config/name'
 
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'nettruyen'
+      name: NettruyenQueue.NAME
     }),
     LeechModule,
     TargetsModule,
