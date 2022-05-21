@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { LeechService } from '@shared/leech/leech.service'
 import {
+  IChapterData,
   IChapterSelector,
+  IStoriesSelector,
   IStoryData,
   IStorySelector
 } from '@shared/site/types/services'
@@ -11,42 +13,70 @@ import { AxiosRequestHeaders } from 'axios'
 export class SiteService {
   constructor(
     readonly leechService: LeechService,
-    readonly selectors: IStorySelector,
-    readonly chapterSelectors: IChapterSelector
+    readonly stories: IStoriesSelector,
+    readonly story: IStorySelector,
+    readonly chapter: IChapterSelector
   ) {}
 
+  /**
+   * Load Crawler
+   */
   async load(url: string, headers: AxiosRequestHeaders = {}) {
     await this.leechService.auto(url, headers)
   }
 
   /**
-   * Story Data
+   * Lấy mảng link truyện
    */
+  getStories(): string[] {
+    return this.leechService.getAttr(this.stories.stories, 'href').array()
+  }
 
+  /**
+   * Lấy tên truyện
+   */
   getName() {
-    return this.leechService.getText(this.selectors.name).single()
+    return this.leechService.getText(this.story.name).single()
   }
 
-  getAvatar() {
-    return this.leechService.getAttr(this.selectors.avatar, 'src').single()
+  /**
+   * Lấy ảnh bìa truyện
+   */
+  getAvatar(attr = 'src') {
+    return this.leechService.getAttr(this.story.avatar, attr).single()
   }
 
-  getAuthor() {
-    return this.leechService.getText(this.selectors.author).single()
+  /**
+   * Lấy danh sách tác giả
+   */
+  getAuthor(): string {
+    return this.leechService.getText(this.story.author).single()
   }
 
+  /**
+   * Lấy mảng thể loại => upsert
+   */
   getCategories() {
-    return this.leechService.getText(this.selectors.categories).array()
+    return this.leechService.getText(this.story.categories).array()
   }
 
+  /**
+   * Lấy giới thiệu truyện
+   */
   getContent() {
-    return this.leechService.getText(this.selectors.content).single()
+    return this.leechService.getText(this.story.content).single()
   }
 
-  getChapters() {
-    return this.leechService.getAttr(this.selectors.chapters, 'href').array()
+  /**
+   * Lấy mảng linh tuyện
+   */
+  getChapters(attr = 'href') {
+    return this.leechService.getAttr(this.story.chapters, attr).array()
   }
 
+  /**
+   * Tổng hợp dữ liệu truyện
+   */
   getStoryData(): IStoryData {
     return {
       name: this.getName(),
@@ -59,15 +89,26 @@ export class SiteService {
   }
 
   /**
-   * Chapter Data
+   * Tên chương
    */
   chapterName() {
-    return this.leechService.getText(this.chapterSelectors.name).single()
+    return this.leechService.getText(this.chapter.name).single()
   }
 
-  chapterImages() {
-    return this.leechService
-      .getAttr(this.chapterSelectors.images, 'src')
-      .array()
+  /**
+   * Mảng url hình ảnh
+   */
+  chapterImages(attr = 'src') {
+    return this.leechService.getAttr(this.chapter.images, attr).array()
+  }
+
+  /**
+   * Nội dung crawl chương
+   */
+  getChapterData(): IChapterData {
+    return {
+      name: this.chapterName(),
+      images: this.chapterImages()
+    }
   }
 }

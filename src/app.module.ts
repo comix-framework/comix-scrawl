@@ -8,6 +8,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { NettruyenModule } from '@site/nettruyen/nettruyen.module'
 import { PostsModule } from '@schema/posts/posts.module'
 import { TargetsModule } from '@schema/targets/targets.module'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TargetsModule } from '@schema/targets/targets.module'
         port: 6379
       }
     }),
+    EventEmitterModule.forRoot(),
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     DatabaseModule,

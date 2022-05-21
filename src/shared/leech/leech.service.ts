@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { CreateRequestDto } from './dto/create-request.dto'
 import { HttpService } from '@nestjs/axios'
 import { AxiosRequestHeaders, AxiosResponse } from 'axios'
-import { catchError, firstValueFrom, map, Observable } from 'rxjs'
+import { first, lastValueFrom, map, Observable } from 'rxjs'
 import { CheerioAPI } from 'cheerio/lib/load'
 import { load } from 'cheerio'
 import { ILeechService } from '@shared/leech/types/leech'
@@ -18,6 +17,7 @@ export class LeechService implements ILeechService {
   constructor(private httpService: HttpService) {}
 
   init(url: string, headers: AxiosRequestHeaders = {}) {
+    this.logger.debug('Crawl target: ' + url)
     this.obs = this.httpService.get(url, {
       headers
     })
@@ -25,15 +25,12 @@ export class LeechService implements ILeechService {
   }
 
   async get() {
-    const _sub = this.obs.pipe(
-      map((data) => data.data),
-      catchError((err) => {
-        this.logger.error(err)
-        throw 'Error: ' + err
-      })
+    this.html = await lastValueFrom<string>(
+      this.obs.pipe(
+        first(),
+        map((data) => data.data)
+      )
     )
-
-    this.html = await firstValueFrom<string>(_sub)
     return this.html
   }
 
@@ -83,9 +80,5 @@ export class LeechService implements ILeechService {
 
   getHTML(selector) {
     return this.$(selector).html()
-  }
-
-  create(createRequestDto: CreateRequestDto) {
-    return 'This action adds a new leech'
   }
 }

@@ -1,3 +1,7 @@
+export interface IStoriesSelector {
+  stories: string
+}
+
 export interface IStorySelector {
   name: string
   avatar: string
@@ -19,4 +23,9 @@ export interface IStoryData {
 export interface IChapterSelector {
   name: string
   images: string
+}
+
+export interface IChapterData {
+  name: string
+  images: string[]
 }
