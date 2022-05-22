@@ -1,9 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { ICloudService } from '@shared/cloud/types/cloud'
 import { AxiosRequestHeaders } from 'axios'
 import { HttpService } from '@nestjs/axios'
 import { catchError, firstValueFrom, map } from 'rxjs'
 import * as https from 'https'
+import { Metadata } from 'sharp'
+import { v4 as uuidv4 } from 'uuid'
+
+import { ICloudService } from '@shared/cloud/types/cloud'
 
 @Injectable()
 export class CloudService implements ICloudService {
@@ -32,5 +35,20 @@ export class CloudService implements ICloudService {
       )
 
     return firstValueFrom<Buffer>(res)
+  }
+
+  buildImagepath(meta: Metadata) {
+    return `storage/chapters/${meta.width}x${meta.height}-${uuidv4()}.${
+      meta.format
+    }`
+  }
+
+  async buildImageMeta(meta: Metadata) {
+    return {
+      src: this.buildImagepath(meta),
+      width: meta.width,
+      height: meta.height,
+      storage: 'leech'
+    }
   }
 }

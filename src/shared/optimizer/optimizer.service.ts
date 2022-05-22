@@ -17,6 +17,11 @@ export class OptimizerService {
       .toBuffer()
   }
 
+  async getImageMeta(image: IOptimizerInput) {
+    const _image = sharp(image)
+    return _image.metadata()
+  }
+
   async resizeWithWater(
     image: IOptimizerInput,
     width,

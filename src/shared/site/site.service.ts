@@ -98,17 +98,17 @@ export class SiteService {
   /**
    * Mảng url hình ảnh
    */
-  chapterImages(attr = 'src') {
+  chapterImages(attr = 'src'): string[] | Promise<string[]> {
     return this.leechService.getAttr(this.chapter.images, attr).array()
   }
 
   /**
    * Nội dung crawl chương
    */
-  getChapterData(): IChapterData {
+  async getChapterData(): Promise<IChapterData> {
     return {
       name: this.chapterName(),
-      images: this.chapterImages()
+      images: await this.chapterImages()
     }
   }
 }

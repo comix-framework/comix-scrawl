@@ -1,10 +1,3 @@
-import { TargetDocument } from '@schema/targets/entities/target.entity'
-import { PostDocument } from '@schema/posts/entities/post.entity'
+import { CrawlStoryDto } from '@shared/site/dto/crawl-story.dto'
 
-export class CrawlStoryNettruyenDto {
-  constructor(
-    readonly source: string,
-    readonly story: PostDocument,
-    readonly target: TargetDocument
-  ) {}
-}
+export class CrawlStoryNettruyenDto extends CrawlStoryDto {}

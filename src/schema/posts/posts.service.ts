@@ -1,19 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { Model, Types } from 'mongoose'
+import { Model } from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose'
 import { Post, PostDocument } from '@schema/posts/entities/post.entity'
-import { TargetDocument } from '@schema/targets/entities/target.entity'
-
-interface ICreatePost {
-  target: TargetDocument
-  postType: string
-  source: string
-  parent?: Types.ObjectId
-}
+import { MongoConnect } from '@database/enums/name'
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel(Post.name) private model: Model<PostDocument>) {}
+  constructor(
+    @InjectModel(Post.name, MongoConnect.CRAWL)
+    private model: Model<PostDocument>
+  ) {}
 
   async findOne(filter: object) {
     return this.model.findOne(filter)
@@ -23,12 +19,9 @@ export class PostsService {
     return this.model.find(filter)
   }
 
-  async create({ target, postType, source, parent }: ICreatePost) {
+  async create(doc: object) {
     return this.model.create({
-      target: target._id,
-      postType,
-      source,
-      parent,
+      ...doc,
       createdAt: Date.now(),
       updatedAt: Date.now()
     })

@@ -12,8 +12,8 @@ export type IOptimizerInput =
   | string
 
 export interface ISize {
-  width: number
-  height: number
+  width?: number
+  height?: number
 }
 
 export interface IRect extends ISize {

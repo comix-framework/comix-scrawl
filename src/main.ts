@@ -10,7 +10,10 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
-      logger
+      logger,
+      options: {
+        port: 5000
+      }
     }
   )
 

@@ -21,8 +21,8 @@
       "@database/*": [
         "src/database/*"
       ],
-      "@request/*": [
-        "src/request/*"
+      "@comix/*": [
+        "src/comix/*"
       ],
       "@shared/*": [
         "src/shared/*"
@@ -32,9 +32,6 @@
       ],
       "@site/*": [
         "src/site/*"
-      ],
-      "@app/*": [
-        "src/app/*"
       ]
     }
   }

@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Target, TargetDocument } from '@schema/targets/entities/target.entity'
+import { MongoConnect } from '@database/enums/name'
 
 @Injectable()
 export class TargetsService {
-  constructor(@InjectModel(Target.name) private model: Model<TargetDocument>) {}
+  constructor(
+    @InjectModel(Target.name, MongoConnect.CRAWL)
+    private model: Model<TargetDocument>
+  ) {}
 
   async upsert(name: string, source: string) {
     return this.model.findOneAndUpdate(

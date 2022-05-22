@@ -21,10 +21,16 @@ export class Post {
   target: TargetDocument
 
   /**
+   * Mối quan hệ vs dữ liệu thật
+   */
+  @Prop({ type: Types.ObjectId, index: true })
+  relationship?: Types.ObjectId
+
+  /**
    * Post parent
    */
   @Prop({ type: Types.ObjectId, index: true })
-  parent: Types.ObjectId
+  parent?: Types.ObjectId
 
   @Prop({ index: true, default: PostStatus.WAILTING, enum: PostStatus })
   postStatus: PostStatus

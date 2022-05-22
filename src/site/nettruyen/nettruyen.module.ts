@@ -9,6 +9,8 @@ import { TargetsModule } from '@schema/targets/targets.module'
 import { PostsModule } from '@schema/posts/posts.module'
 import { NettruyenQueue } from '@site/nettruyen/enums/queue'
 import { NettruyenJobs } from '@site/nettruyen/jobs'
+import { CloudModule } from '@shared/cloud/cloud.module'
+import { OptimizerModule } from '@shared/optimizer/optimizer.module'
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { NettruyenJobs } from '@site/nettruyen/jobs'
     }),
     LeechModule,
     TargetsModule,
-    PostsModule
+    PostsModule,
+    CloudModule,
+    OptimizerModule
   ],
   controllers: [NettruyenController],
   providers: [
